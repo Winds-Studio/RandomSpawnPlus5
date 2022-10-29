@@ -6,7 +6,7 @@
 
     <groupId>systems.kscott</groupId>
     <artifactId>randomspawnplus</artifactId>
-    <version>3.4.3</version>
+    <version>5.0.2</version>
     <packaging>jar</packaging>
 
     <name>RandomSpawnPlus</name>
@@ -38,7 +38,7 @@
                     <relocations>
                         <relocation>
                             <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>systems.kscott.randomspawnplus3.acf</shadedPattern> <!-- Replace this -->
+                            <shadedPattern>systems.kscott.randomspawnplus.acf</shadedPattern> <!-- Replace this -->
                         </relocation>
                     </relocations>
                 </configuration>
@@ -71,7 +71,7 @@
     <repositories>
         <repository>
             <id>papermc-repo</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <repository>
             <id>sonatype</id>
@@ -79,7 +79,7 @@
         </repository>
         <repository>
             <id>ess-repo</id>
-            <url>https://ci.ender.zone/plugin/repository/everything/</url>
+            <url>https://repo.essentialsx.net/releases/</url>
         </repository>
         <repository>
             <id>aikar</id>
@@ -93,43 +93,43 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
+            <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.19.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.5</version>
+            <version>2.11.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>1.18.24</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.ess3</groupId>
+            <groupId>net.essentialsx</groupId>
             <artifactId>EssentialsX</artifactId>
-            <version>2.17.0</version>
+            <version>2.19.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>co.aikar</groupId>
-            <artifactId>acf-PAPER</artifactId>
-            <version>0.5.0-SNAPSHOT</version>
+            <artifactId>acf-paper</artifactId>
+            <version>0.5.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
-            <version>5.0</version>
+            <version>5.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

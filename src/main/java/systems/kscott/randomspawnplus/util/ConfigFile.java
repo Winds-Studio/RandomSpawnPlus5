@@ -1,10 +1,10 @@
-package systems.kscott.randomspawnplus3.util;
+package systems.kscott.randomspawnplus.util;
 
 import lombok.Getter;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import systems.kscott.randomspawnplus3.RandomSpawnPlus;
+import systems.kscott.randomspawnplus.RandomSpawnPlus;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package systems.kscott.randomspawnplus3.exceptions;
+package systems.kscott.randomspawnplus.exceptions;
 
 public class FinderTimedOutException extends Exception {
 }

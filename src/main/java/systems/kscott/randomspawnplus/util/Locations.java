@@ -1,4 +1,4 @@
-package systems.kscott.randomspawnplus3.util;
+package systems.kscott.randomspawnplus.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,7 +27,7 @@ public class Locations {
         int y = location.getBlockY();
         int z = location.getBlockZ();
 
-        return world+"|"+x+"|"+y+"|"+z;
+        return world + "|" + x + "|" + y + "|" + z;
     }
 
     public static List<Location> deserializeLocationStringList(List<String> locStrings) {

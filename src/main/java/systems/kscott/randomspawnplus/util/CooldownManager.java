@@ -1,10 +1,9 @@
-package systems.kscott.randomspawnplus3.util;
+package systems.kscott.randomspawnplus.util;
 
 import org.bukkit.entity.Player;
-import systems.kscott.randomspawnplus3.RandomSpawnPlus;
+import systems.kscott.randomspawnplus.RandomSpawnPlus;
 
 import java.time.Instant;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 

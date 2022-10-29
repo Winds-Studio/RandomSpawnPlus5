@@ -1,33 +1,24 @@
-package systems.kscott.randomspawnplus3.spawn;
+package systems.kscott.randomspawnplus.spawn;
 
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
-import systems.kscott.randomspawnplus3.RandomSpawnPlus;
-import systems.kscott.randomspawnplus3.util.Locations;
+import systems.kscott.randomspawnplus.RandomSpawnPlus;
+import systems.kscott.randomspawnplus.util.Locations;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 public class SpawnCacher {
 
     public static SpawnCacher INSTANCE;
-
-
-    public static void initialize(RandomSpawnPlus plugin) {
-        INSTANCE = new SpawnCacher(plugin);
-    }
-
-    public static SpawnCacher getInstance() {
-        return INSTANCE;
-    }
-
     private RandomSpawnPlus plugin;
-
     @Getter
     private boolean spawnsRequireSaving;
-
     @Getter
     private List<String> cachedSpawns;
 
@@ -38,11 +29,20 @@ public class SpawnCacher {
         cacheSpawns();
     }
 
+    public static void initialize(RandomSpawnPlus plugin) {
+        INSTANCE = new SpawnCacher(plugin);
+    }
+
+    public static SpawnCacher getInstance() {
+        return INSTANCE;
+    }
+
     private void cacheSpawns() {
-        boolean debugMode = plugin.getConfigManager().getConfig().getBoolean("debug-mode");
 
         FileConfiguration spawns = plugin.getSpawns();
         FileConfiguration config = plugin.getConfig();
+
+        boolean debugMode = plugin.getConfig().getBoolean("debug-mode");
 
         SpawnFinder finder = SpawnFinder.getInstance();
 
@@ -58,7 +58,7 @@ public class SpawnCacher {
 
         List<String> newLocations = new ArrayList<>();
 
-        Bukkit.getLogger().info("Caching "+missingLocations+" spawns.");
+        Bukkit.getLogger().info("Caching " + missingLocations + " spawns.");
         for (int i = 0; i <= missingLocations; i++) {
             new BukkitRunnable() {
 
@@ -82,8 +82,9 @@ public class SpawnCacher {
             public void run() {
                 /* Wait for all spawns to be cached */
                 if (newLocations.size() <= missingLocations) {
-                    if (debugMode)
-                        Bukkit.getLogger().info(newLocations.size() +", "+ missingLocations);
+                    if (debugMode) {
+                        Bukkit.getLogger().info(newLocations.size() + ", " + missingLocations);
+                    }
                 } else {
                     cachedSpawns.addAll(newLocations);
                     /* Save spawns to file */

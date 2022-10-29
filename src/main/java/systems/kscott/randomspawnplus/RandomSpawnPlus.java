@@ -1,4 +1,4 @@
-package systems.kscott.randomspawnplus3;
+package systems.kscott.randomspawnplus;
 
 import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
@@ -9,16 +9,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import systems.kscott.randomspawnplus3.commands.CommandRSP;
-import systems.kscott.randomspawnplus3.commands.CommandWild;
-import systems.kscott.randomspawnplus3.listeners.RSPDeathListener;
-import systems.kscott.randomspawnplus3.listeners.RSPFirstJoinListener;
-import systems.kscott.randomspawnplus3.listeners.RSPLoginListener;
-import systems.kscott.randomspawnplus3.spawn.SpawnCacher;
-import systems.kscott.randomspawnplus3.spawn.SpawnFinder;
-import systems.kscott.randomspawnplus3.util.Chat;
-import systems.kscott.randomspawnplus3.util.ConfigFile;
-import systems.kscott.randomspawnplus3.util.Metrics;
+import systems.kscott.randomspawnplus.commands.CommandRSP;
+import systems.kscott.randomspawnplus.commands.CommandWild;
+import systems.kscott.randomspawnplus.listeners.RSPDeathListener;
+import systems.kscott.randomspawnplus.listeners.RSPFirstJoinListener;
+import systems.kscott.randomspawnplus.listeners.RSPLoginListener;
+import systems.kscott.randomspawnplus.spawn.SpawnCacher;
+import systems.kscott.randomspawnplus.spawn.SpawnFinder;
+import systems.kscott.randomspawnplus.util.Chat;
+import systems.kscott.randomspawnplus.util.ConfigFile;
+import systems.kscott.randomspawnplus.util.Metrics;
 
 public final class RandomSpawnPlus extends JavaPlugin {
 
@@ -36,6 +36,10 @@ public final class RandomSpawnPlus extends JavaPlugin {
 
     @Getter
     private LuckPerms luckPerms;
+
+    public static RandomSpawnPlus getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public void onEnable() {
@@ -84,7 +88,6 @@ public final class RandomSpawnPlus extends JavaPlugin {
         SpawnCacher.getInstance().save();
     }
 
-
     public void registerEvents() {
         getServer().getPluginManager().registerEvents(new RSPDeathListener(this), this);
         getServer().getPluginManager().registerEvents(new RSPLoginListener(this), this);
@@ -97,10 +100,6 @@ public final class RandomSpawnPlus extends JavaPlugin {
         if (configManager.getConfig().getBoolean("wild-enabled")) {
             manager.registerCommand(new CommandWild(this));
         }
-    }
-
-    public static RandomSpawnPlus getInstance() {
-        return INSTANCE;
     }
 
     public IEssentials getEssentials() {
@@ -128,7 +127,7 @@ public final class RandomSpawnPlus extends JavaPlugin {
     }
 
     private void setupEconomy() throws Exception {
-        RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
             throw new Exception("Error when loading the Vault API");
         }

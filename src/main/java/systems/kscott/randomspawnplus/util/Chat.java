@@ -1,4 +1,4 @@
-package systems.kscott.randomspawnplus3.util;
+package systems.kscott.randomspawnplus.util;
 
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import systems.kscott.randomspawnplus3.RandomSpawnPlus;
+import systems.kscott.randomspawnplus.RandomSpawnPlus;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;

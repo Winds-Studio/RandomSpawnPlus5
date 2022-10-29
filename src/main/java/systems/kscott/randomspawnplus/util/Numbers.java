@@ -1,4 +1,4 @@
-package systems.kscott.randomspawnplus3.util;
+package systems.kscott.randomspawnplus.util;
 
 import java.util.Random;
 
@@ -13,9 +13,8 @@ public class Numbers {
         return r.nextInt((max - min) + 1) + min;
     }
 
-    public static boolean betweenExclusive(int x, int min, int max)
-    {
-        return x>min && x<max;
+    public static boolean betweenExclusive(int x, int min, int max) {
+        return x > min && x < max;
     }
 
 }

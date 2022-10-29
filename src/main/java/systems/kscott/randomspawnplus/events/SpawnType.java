@@ -1,4 +1,4 @@
-package systems.kscott.randomspawnplus3.events;
+package systems.kscott.randomspawnplus.events;
 
 public enum SpawnType {
     FIRST_JOIN,

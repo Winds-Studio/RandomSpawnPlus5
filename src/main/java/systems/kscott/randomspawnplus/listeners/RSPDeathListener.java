@@ -1,4 +1,4 @@
-package systems.kscott.randomspawnplus3.listeners;
+package systems.kscott.randomspawnplus.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -8,11 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import systems.kscott.randomspawnplus3.RandomSpawnPlus;
-import systems.kscott.randomspawnplus3.events.RandomSpawnEvent;
-import systems.kscott.randomspawnplus3.events.SpawnType;
-import systems.kscott.randomspawnplus3.exceptions.FinderTimedOutException;
-import systems.kscott.randomspawnplus3.spawn.SpawnFinder;
+import systems.kscott.randomspawnplus.RandomSpawnPlus;
+import systems.kscott.randomspawnplus.events.RandomSpawnEvent;
+import systems.kscott.randomspawnplus.events.SpawnType;
+import systems.kscott.randomspawnplus.exceptions.FinderTimedOutException;
+import systems.kscott.randomspawnplus.spawn.SpawnFinder;
 
 public class RSPDeathListener implements Listener {
 
@@ -44,8 +44,8 @@ public class RSPDeathListener implements Listener {
                         try {
                             location = SpawnFinder.getInstance().findSpawn(true).add(0.5, 0, 0.5);
                         } catch (FinderTimedOutException e) {
-                                    plugin.getLogger().warning("The spawn finder failed to find a valid spawn, and has not given "+player.getName()+" a random spawn. If you find this happening a lot, then raise the 'spawn-finder-tries-before-timeout' key in the config.");
-                                    return;
+                            plugin.getLogger().warning("The spawn finder failed to find a valid spawn, and has not given " + player.getName() + " a random spawn. If you find this happening a lot, then raise the 'spawn-finder-tries-before-timeout' key in the config.");
+                            return;
                         }
 
                         RandomSpawnEvent randomSpawnEvent = new RandomSpawnEvent(location, player, SpawnType.ON_DEATH);

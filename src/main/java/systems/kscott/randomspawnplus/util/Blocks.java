@@ -1,4 +1,4 @@
-package systems.kscott.randomspawnplus3.util;
+package systems.kscott.randomspawnplus.util;
 
 import org.bukkit.block.Block;
 

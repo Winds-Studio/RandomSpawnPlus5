@@ -1,4 +1,4 @@
-package systems.kscott.randomspawnplus3.spawn;
+package systems.kscott.randomspawnplus.spawn;
 
 import lombok.Getter;
 

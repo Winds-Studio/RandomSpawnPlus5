@@ -1,15 +1,15 @@
-package systems.kscott.randomspawnplus3.spawn;
+package systems.kscott.randomspawnplus.spawn;
 
 import io.papermc.lib.PaperLib;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import systems.kscott.randomspawnplus3.RandomSpawnPlus;
-import systems.kscott.randomspawnplus3.events.SpawnCheckEvent;
-import systems.kscott.randomspawnplus3.exceptions.FinderTimedOutException;
-import systems.kscott.randomspawnplus3.util.Blocks;
-import systems.kscott.randomspawnplus3.util.Numbers;
-import systems.kscott.randomspawnplus3.util.XMaterial;
+import systems.kscott.randomspawnplus.RandomSpawnPlus;
+import systems.kscott.randomspawnplus.events.SpawnCheckEvent;
+import systems.kscott.randomspawnplus.exceptions.FinderTimedOutException;
+import systems.kscott.randomspawnplus.util.Blocks;
+import systems.kscott.randomspawnplus.util.Numbers;
+import systems.kscott.randomspawnplus.util.XMaterial;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,20 +20,9 @@ import java.util.concurrent.ExecutionException;
 public class SpawnFinder {
 
     public static SpawnFinder INSTANCE;
-
-    public static void initialize(RandomSpawnPlus plugin) {
-        INSTANCE = new SpawnFinder(plugin);
-    }
-
-    public static SpawnFinder getInstance() {
-        return INSTANCE;
-    }
-
-    ArrayList<Material> safeBlocks;
-
     public RandomSpawnPlus plugin;
-
     public FileConfiguration config;
+    ArrayList<Material> safeBlocks;
 
     public SpawnFinder(RandomSpawnPlus plugin) {
         this.plugin = plugin;
@@ -53,6 +42,14 @@ public class SpawnFinder {
         safeBlocks.add(XMaterial.CAVE_AIR.parseMaterial());
     }
 
+    public static void initialize(RandomSpawnPlus plugin) {
+        INSTANCE = new SpawnFinder(plugin);
+    }
+
+    public static SpawnFinder getInstance() {
+        return INSTANCE;
+    }
+
     public Location getCandidateLocation() {
         String worldString = config.getString("respawn-world");
 
@@ -65,7 +62,7 @@ public class SpawnFinder {
         World world = Bukkit.getWorld(worldString);
 
         if (world == null) {
-            plugin.getLogger().severe("The world '"+worldString+"' is invalid. Please change the 'respawn-world' key in the config.");
+            plugin.getLogger().severe("The world '" + worldString + "' is invalid. Please change the 'respawn-world' key in the config.");
             plugin.getServer().getPluginManager().disablePlugin(plugin);
             return null;
         }
@@ -84,7 +81,7 @@ public class SpawnFinder {
             SpawnRegion region1 = new SpawnRegion(minX, minXblocked, minZ, minZblocked);
             SpawnRegion region2 = new SpawnRegion(minXblocked, maxXblocked, minZblocked, maxZ - maxZblocked);
             SpawnRegion region3 = new SpawnRegion(maxXblocked, maxX, maxZblocked, maxX);
-            SpawnRegion region4 = new SpawnRegion(minZblocked, maxZ-minZblocked, minZ + minXblocked, maxZ - minZblocked);
+            SpawnRegion region4 = new SpawnRegion(minZblocked, maxZ - minZblocked, minZ + minXblocked, maxZ - minZblocked);
 
             SpawnRegion[] spawnRegions = new SpawnRegion[]{region1, region2, region3, region4};
 
@@ -96,11 +93,13 @@ public class SpawnFinder {
             maxZ = region.getMaxZ();
         }
 
-        System.out.println(minX);
-        System.out.println(minZ);
-        System.out.println(maxX);
-        System.out.println(maxZ);
-
+        boolean debugMode = config.getBoolean("debug-mode");
+        if (debugMode) {
+            System.out.println(minX);
+            System.out.println(minZ);
+            System.out.println(maxX);
+            System.out.println(maxZ);
+        }
 
         int candidateX = Numbers.getRandomNumberInRange(minX, maxX);
         int candidateZ = Numbers.getRandomNumberInRange(minZ, maxZ);
@@ -150,7 +149,7 @@ public class SpawnFinder {
             plugin.getLogger().info(locClone.getBlock().getType().toString());
             plugin.getLogger().info(locClone.add(0, 1, 0).getBlock().getType().toString());
             plugin.getLogger().info(locClone.add(0, 1, 0).getBlock().getType().toString());
-            plugin.getLogger().info("Spawned at "+location.getBlockX()+", "+location.getBlockY()+", "+location.getBlockZ());
+            plugin.getLogger().info("Spawned at " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ());
         }
         return location.add(0, 1, 0);
     }
@@ -200,8 +199,9 @@ public class SpawnFinder {
         isValid = spawnCheckEvent.isValid();
 
         if (!isValid) {
-            if (debugMode)
-                plugin.getLogger().info("Invalid spawn: "+spawnCheckEvent.getValidReason());
+            if (debugMode) {
+                plugin.getLogger().info("Invalid spawn: " + spawnCheckEvent.getValidReason());
+            }
         }
 
         if (blockedSpawnRange) {
@@ -229,7 +229,7 @@ public class SpawnFinder {
 
         if (!safeBlocks.contains(block1.getType())) {
             if (debugMode) {
-                plugin.getLogger().info("Invalid spawn: "+block1.getType().toString()+" is not a safe block!");
+                plugin.getLogger().info("Invalid spawn: " + block1.getType().toString() + " is not a safe block!");
             }
             isValid = false;
         }
@@ -256,11 +256,13 @@ public class SpawnFinder {
     }
 
     public int getHighestY(World world, int x, int z) {
-        int i = 255;
-        while (i > 0) {
+        boolean debugMode = config.getBoolean("debug-mode");
+        int i = 320;
+        while (i > -64) {
             if (!Blocks.isEmpty(new Location(world, x, i, z).getBlock())) {
-                if (config.getBoolean("debug-mode"))
+                if (debugMode) {
                     plugin.getLogger().info(Integer.toString(i));
+                }
                 return i;
             }
             i--;

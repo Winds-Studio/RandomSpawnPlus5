@@ -1,4 +1,4 @@
-package systems.kscott.randomspawnplus3.events;
+package systems.kscott.randomspawnplus.events;
 
 import lombok.Getter;
 import org.bukkit.Location;
@@ -7,25 +7,21 @@ import org.bukkit.event.HandlerList;
 
 public class SpawnCheckEvent extends Event {
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS_LIST;
-    }
-
     private static final HandlerList HANDLERS_LIST = new HandlerList();
-
     @Getter
     private Location location;
-
     @Getter
     private boolean valid;
-
     @Getter
     private String validReason = "UNK";
-
 
     public SpawnCheckEvent(Location location) {
         this.location = location;
         this.valid = true;
+    }
+
+    public static HandlerList getHandlerList() {
+        return HANDLERS_LIST;
     }
 
     @Override

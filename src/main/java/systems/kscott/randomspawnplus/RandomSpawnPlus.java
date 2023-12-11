@@ -25,6 +25,7 @@ import systems.kscott.randomspawnplus.util.ConfigFile;
 public final class RandomSpawnPlus extends JavaPlugin {
 
     private static RandomSpawnPlus INSTANCE;
+    private BukkitAudiences adventure;
     public FoliaLib foliaLib = new FoliaLib(this);
 
     @Getter
@@ -43,7 +44,6 @@ public final class RandomSpawnPlus extends JavaPlugin {
         return INSTANCE;
     }
 
-    private BukkitAudiences adventure;
     public @NotNull BukkitAudiences adventure() {
         if (this.adventure == null) {
             throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
@@ -145,8 +145,6 @@ public final class RandomSpawnPlus extends JavaPlugin {
 
     private boolean setupEconomy() {
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) return false;
-        economy = rsp.getProvider();
-        return economy != null;
+        return rsp.getProvider() != null;
     }
 }

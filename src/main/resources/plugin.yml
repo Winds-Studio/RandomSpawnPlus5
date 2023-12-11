@@ -3,8 +3,14 @@ version: ${version}
 main: systems.kscott.randomspawnplus.RandomSpawnPlus
 api-version: 1.13
 folia-supported: true
-softdepend: [Essentials, Factions, Vault, LuckPerms]
-authors: [ 89apt89, Dreeam ]
+softdepend:
+  - Essentials
+  - Factions
+  - Vault
+  - LuckPerms
+authors:
+  - 89apt89
+  - Dreeam__
 description: A comprehensive random spawning plugin for modern Minecraft versions.
 load: POSTWORLD
 

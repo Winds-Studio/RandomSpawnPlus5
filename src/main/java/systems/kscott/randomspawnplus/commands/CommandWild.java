@@ -59,6 +59,7 @@ public class CommandWild extends BaseCommand {
             return;
 
         }
+
         if (RandomSpawnPlus.getEconomy() != null && RandomSpawnPlus.getInstance().getConfig().getInt("wild-cost") != 0 && !player.hasPermission("randomspawnplus.wild.bypasscost")) {
             if (RandomSpawnPlus.getEconomy().has(player, config.getInt("wild-cost"))) {
                 RandomSpawnPlus.getEconomy().withdrawPlayer(player, config.getInt("wild-cost"));
@@ -116,11 +117,11 @@ public class CommandWild extends BaseCommand {
             Chat.msg(otherPlayer, Chat.get("error-finding-spawn"));
             return;
         }
+
         String message = Chat.get("wild-tp")
                 .replace("%x", Integer.toString(location.getBlockX()))
                 .replace("%y", Integer.toString(location.getBlockY()))
                 .replace("%z", Integer.toString(location.getBlockZ()));
-
         Chat.msg(otherPlayer, message);
 
         message = Chat.get("wild-tp-other");
@@ -130,9 +131,7 @@ public class CommandWild extends BaseCommand {
         RandomSpawnEvent randomSpawnEvent = new RandomSpawnEvent(location, otherPlayer.getPlayer(), SpawnType.WILD_COMMAND);
 
         Bukkit.getServer().getPluginManager().callEvent(randomSpawnEvent);
-        if (!location.getChunk().isLoaded()) {
-            location.getChunk().load();
-        }
         RandomSpawnPlus.getInstance().foliaLib.getImpl().teleportAsync(otherPlayer, location.add(0.5, 0, 0.5));
+        CooldownManager.addCooldown(otherPlayer);
     }
 }

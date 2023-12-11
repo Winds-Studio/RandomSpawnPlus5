@@ -21,6 +21,7 @@ jobs:
         run: ./gradlew clean build
 
       - name: Release RandomSpawnPlus5
+        if: github.ref_name == 'master'
         uses: marvinpinto/action-automatic-releases@master
         with:
           title: "RandomSpawnPlus5 v5.1.0-SNAPSHOT"

@@ -17,6 +17,15 @@
 
 - 📫 Discord: `dreeam___` | QQ: `2682173972`
 
+## TODO
+
+TODO logic:
+load/generate all chunks based on spawn range in config
+if Chunky/others enabled, hook them to generate/load
+
+then find and check spawns
+(rework or improve check spawn logic in SpawnFinder#checkSpawn)
+
 ## Special Thanks To:
 
 <a href="https://cloud.swordsman.com.cn/"><img src="JiankeServer.jpg" alt="Jianke Cloud Host" align="left" hspace="8"></a>

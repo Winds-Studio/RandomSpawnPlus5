@@ -145,6 +145,6 @@ public final class RandomSpawnPlus extends JavaPlugin {
 
     private boolean setupEconomy() {
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        return rsp.getProvider() != null;
+        return (rsp != null ? rsp.getProvider() : null) != null;
     }
 }

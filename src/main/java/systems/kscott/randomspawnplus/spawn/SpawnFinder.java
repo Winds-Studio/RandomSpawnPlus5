@@ -101,7 +101,7 @@ public class SpawnFinder {
 
         int tries = 0;
         while (!valid) {
-            if (tries >= 30) {
+            if (tries >= config.getInt("spawn-finder-tries-before-timeout")) {
                 throw new Exception();
             }
             if (SpawnCacher.getInstance().getCachedSpawns().isEmpty()) {

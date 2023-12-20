@@ -31,6 +31,10 @@ public class SpawnFinder {
         for (String string : unsafeBlockStrings) {
             unsafeBlocks.add(Material.matchMaterial(string));
         }
+
+        unsafeBlocks.add(Material.AIR);
+        unsafeBlocks.add(Material.VOID_AIR);
+        unsafeBlocks.add(Material.CAVE_AIR);
     }
 
     public static void initialize() {
@@ -86,11 +90,9 @@ public class SpawnFinder {
 
         int candidateX = Numbers.getRandomNumberInRange(minX, maxX);
         int candidateZ = Numbers.getRandomNumberInRange(minZ, maxZ);
-        int candidateY = getHighestY(world, candidateX, candidateZ);
+        int candidateY = getHighestYBetter(world, candidateX, candidateZ);
 
-        Location loc1 = new Location(world, candidateX, candidateY, candidateZ);
-        System.out.println(loc1);
-        return loc1;
+        return new Location(world, candidateX, candidateY, candidateZ);
     }
 
     private Location getValidLocation() throws Exception {
@@ -160,7 +162,7 @@ public class SpawnFinder {
 
         // Dreeam - Lag god below
         if (!location.getChunk().isLoaded()) {
-            location.getChunk().load(true);
+            location.getChunk().load(false);
             //SpawnLoader.getInstance().chunkLoaded = false;
             //location.getWorld().loadChunk(location.getChunk());
             //RandomSpawnPlus.getInstance().foliaLib.getImpl().runAsync(task -> location.getChunk().load(true));
@@ -179,7 +181,7 @@ public class SpawnFinder {
 
         if (!isValid) {
             if (debugMode) {
-                //System.out.println("Invalid spawn: " + spawnCheckEvent.getValidReason());
+                System.out.println("Invalid spawn: " + spawnCheckEvent.getValidReason());
             }
         }
 
@@ -194,21 +196,21 @@ public class SpawnFinder {
 
         if (block0.isEmpty()) {
             if (debugMode) {
-                //System.out.println("Invalid spawn: block0 isAir");
+                System.out.println("Invalid spawn: block0 isAir");
             }
             isValid = false;
         }
 
         if (!block1.isEmpty() || !block2.isEmpty()) {
             if (debugMode) {
-                //System.out.println("Invalid spawn: block1 or block2 !isAir");
+                System.out.println("Invalid spawn: block1 or block2 !isAir");
             }
             isValid = false;
         }
 
-        if (unsafeBlocks.contains(block1.getType())) {
+        if (!unsafeBlocks.contains(block1.getType())) { // Dreeam TODO - need to check why it should be !unsafeBlocks
             if (debugMode) {
-                //System.out.println("Invalid spawn: " + block1.getType() + " is not a safe block!");
+                System.out.println("Invalid spawn: " + block1.getType() + " is not a safe block!");
             }
             isValid = false;
         }
@@ -216,7 +218,7 @@ public class SpawnFinder {
         if (blockWaterSpawns) {
             if (block0.getType() == Material.WATER) {
                 if (debugMode) {
-                    //System.out.println("Invalid spawn: blockWaterSpawns");
+                    System.out.println("Invalid spawn: blockWaterSpawns");
                 }
                 isValid = false;
             }
@@ -225,7 +227,7 @@ public class SpawnFinder {
         if (blockLavaSpawns) {
             if (block0.getType() == Material.LAVA) {
                 if (debugMode) {
-                    //System.out.println("Invalid spawn: blockLavaSpawns");
+                    System.out.println("Invalid spawn: blockLavaSpawns");
                 }
                 isValid = false;
             }
@@ -234,11 +236,19 @@ public class SpawnFinder {
         return isValid;
     }
 
+    public int getHighestYBetter(World world, int x, int z) {
+        Block location = RandomSpawnPlus.getInstance().getServer().getWorld(world.getName()).getHighestBlockAt(x, z);
+        if (config.getBoolean("debug-mode")) {
+            System.out.println(location.getX() + ", " + location.getY() + ", " + location.getZ());
+        }
+        return location.getY();
+    }
+
     // Dreeam - Lag god below
-    public int getHighestY(World world, int x, int z) {
+    public int getHighestYOriginal(World world, int x, int z) {
         int i = world.getMaxHeight();
         while (i > world.getMinHeight()) {
-            if (!(new Location(world, x, i, z).getBlock().getType().isAir())) {
+            if (!(new Location(world, x, i, z).getBlock()).isEmpty()) {
                 if (config.getBoolean("debug-mode")) {
                     System.out.println(x + ", " + i + ", " + z);
                 }
@@ -264,10 +274,5 @@ public class SpawnFinder {
         }
 
         return maxHeight;
-    }
-
-    public int getHighestYBetter(World world, int x, int z) {
-        Block location = RandomSpawnPlus.getInstance().getServer().getWorld(world.getName()).getHighestBlockAt(x, z);
-        return location.getY();
     }
 }

@@ -39,6 +39,12 @@ repositories {
         name = "devmart-other"
         url = uri("https://nexuslite.gcnt.net/repos/other/")
     }
+
+    // Chunky
+    maven {
+        name = "codemc-repo"
+        url = uri("https://repo.codemc.io/repository/maven-public/")
+    }
 }
 
 val adventureVersion = "4.14.0"
@@ -56,6 +62,7 @@ dependencies {
     compileOnly("net.essentialsx:EssentialsX:2.20.1")
     compileOnly("net.luckperms:api:5.4")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
+    compileOnly("org.popcraft:chunky-common:1.3.38")
 
     api("net.kyori:adventure-platform-bukkit:4.3.1")
     api("net.kyori:adventure-api:$adventureVersion")

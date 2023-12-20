@@ -57,7 +57,6 @@ public class CommandWild extends BaseCommand {
 
             Chat.msg(player, message);
             return;
-
         }
 
         if (RandomSpawnPlus.getEconomy() != null && RandomSpawnPlus.getInstance().getConfig().getInt("wild-cost") != 0 && !player.hasPermission("randomspawnplus.wild.bypasscost")) {

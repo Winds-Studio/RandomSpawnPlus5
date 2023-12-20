@@ -20,11 +20,17 @@
 ## TODO
 
 TODO logic:
+
 load/generate all chunks based on spawn range in config
+
 if Chunky/others enabled, hook them to generate/load
 
 then find and check spawns
+
 (rework or improve check spawn logic in SpawnFinder#checkSpawn)
+
+spawn height, Compatible with lower version players
+
 
 ## Special Thanks To:
 

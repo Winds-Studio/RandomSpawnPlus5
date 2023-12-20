@@ -8,11 +8,11 @@ softdepend:
   - Factions
   - Vault
   - LuckPerms
+  - Chunky
 authors:
   - 89apt89
   - Dreeam__
 description: A comprehensive random spawning plugin for modern Minecraft versions.
-load: POSTWORLD
 
 commands:
   wild:

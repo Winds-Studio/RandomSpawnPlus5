@@ -1,6 +1,5 @@
 package systems.kscott.randomspawnplus.spawn;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -17,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SpawnFinder {
 
-    public static SpawnFinder INSTANCE;
+    private static SpawnFinder INSTANCE;
     public FileConfiguration config;
     ArrayList<Material> unsafeBlocks;
 
@@ -51,7 +50,7 @@ public class SpawnFinder {
             return null;
         }
 
-        World world = Bukkit.getWorld(worldString);
+        World world = RandomSpawnPlus.getInstance().getServer().getWorld(worldString);
 
         if (world == null) {
             RandomSpawnPlus.getInstance().getLogger().severe("The world '" + worldString + "' is invalid. Please change the 'respawn-world' key in the config.");
@@ -89,10 +88,12 @@ public class SpawnFinder {
         int candidateZ = Numbers.getRandomNumberInRange(minZ, maxZ);
         int candidateY = getHighestY(world, candidateX, candidateZ);
 
-        return new Location(world, candidateX, candidateY, candidateZ);
+        Location loc1 = new Location(world, candidateX, candidateY, candidateZ);
+        System.out.println(loc1);
+        return loc1;
     }
 
-    private Location getValidLocation(boolean useSpawnCaching) throws Exception {
+    private Location getValidLocation() throws Exception {
         boolean useCache = config.getBoolean("enable-spawn-cacher");
 
         boolean valid = false;
@@ -107,36 +108,38 @@ public class SpawnFinder {
             if (SpawnCacher.getInstance().getCachedSpawns().isEmpty()) {
                 RandomSpawnPlus.getInstance().getLogger().severe(Chat.get("no-spawns-cached"));
             }
-            if (useCache && useSpawnCaching && !SpawnCacher.getInstance().getCachedSpawns().isEmpty()) {
+            if (useCache && !SpawnCacher.getInstance().getCachedSpawns().isEmpty()) {
                 location = SpawnCacher.getInstance().getRandomSpawn();
             } else {
                 location = getCandidateLocation();
             }
             valid = checkSpawn(location);
 
-            if (!valid && useCache && useSpawnCaching) {
+            if (!valid && useCache) {
                 SpawnCacher.getInstance().deleteSpawn(location);
             }
-            tries = tries + 1;
+            tries += 1;
         }
-        if (location == null) return null;
         return location;
     }
 
-    public Location findSpawn(boolean useSpawnCaching) throws Exception {
+    public Location getSpawn() throws Exception {
 
-        Location location = getValidLocation(useSpawnCaching);
-        if (location == null) return null;
+        Location location = getValidLocation().clone();
 
         if (config.getBoolean("debug-mode")) {
-            Location locClone = location.clone();
-            System.out.println(locClone.getBlock().getType());
-            System.out.println(locClone.add(0, 1, 0).getBlock().getType());
-            System.out.println(locClone.add(0, 1, 0).getBlock().getType());
+            Location debugLoc = location.clone();
+            System.out.println(debugLoc.getBlock().getType());
+            System.out.println(debugLoc.add(0, 1, 0).getBlock().getType());
+            System.out.println(debugLoc.add(0, 1, 0).getBlock().getType());
             System.out.println("Spawned at " + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ());
         }
         return location.add(0, 1, 0);
     }
+
+//    public boolean scanSpawn(Location location) {
+//        return true;
+//    }
 
     public boolean checkSpawn(Location location) {
         if (location == null) return false;
@@ -155,8 +158,13 @@ public class SpawnFinder {
 
         Location locClone = location.clone();
 
+        // Dreeam - Lag god below
         if (!location.getChunk().isLoaded()) {
-            return false;
+            location.getChunk().load(true);
+            //SpawnLoader.getInstance().chunkLoaded = false;
+            //location.getWorld().loadChunk(location.getChunk());
+            //RandomSpawnPlus.getInstance().foliaLib.getImpl().runAsync(task -> location.getChunk().load(true));
+            //RandomSpawnPlus.getInstance().foliaLib.getImpl().runAsync(task -> location.getWorld().getChunkAt(location.getChunk().getX(), location.getChunk().getZ()));
         }
 
         Block block0 = locClone.getBlock();
@@ -165,13 +173,13 @@ public class SpawnFinder {
 
         SpawnCheckEvent spawnCheckEvent = new SpawnCheckEvent(location);
 
-        Bukkit.getServer().getPluginManager().callEvent(spawnCheckEvent);
+        RandomSpawnPlus.getInstance().getServer().getPluginManager().callEvent(spawnCheckEvent);
 
         isValid = spawnCheckEvent.isValid();
 
         if (!isValid) {
             if (debugMode) {
-                System.out.println("Invalid spawn: " + spawnCheckEvent.getValidReason());
+                //System.out.println("Invalid spawn: " + spawnCheckEvent.getValidReason());
             }
         }
 
@@ -184,23 +192,23 @@ public class SpawnFinder {
             }
         }
 
-        if (block0.getType().isAir()) {
+        if (block0.isEmpty()) {
             if (debugMode) {
-                System.out.println("Invalid spawn: block0 isAir");
+                //System.out.println("Invalid spawn: block0 isAir");
             }
             isValid = false;
         }
 
-        if (!block1.getType().isAir() || !block2.getType().isAir()) {
+        if (!block1.isEmpty() || !block2.isEmpty()) {
             if (debugMode) {
-                System.out.println("Invalid spawn: block1 or block2 !isAir");
+                //System.out.println("Invalid spawn: block1 or block2 !isAir");
             }
             isValid = false;
         }
 
         if (unsafeBlocks.contains(block1.getType())) {
             if (debugMode) {
-                System.out.println("Invalid spawn: " + block1.getType() + " is not a safe block!");
+                //System.out.println("Invalid spawn: " + block1.getType() + " is not a safe block!");
             }
             isValid = false;
         }
@@ -208,7 +216,7 @@ public class SpawnFinder {
         if (blockWaterSpawns) {
             if (block0.getType() == Material.WATER) {
                 if (debugMode) {
-                    System.out.println("Invalid spawn: blockWaterSpawns");
+                    //System.out.println("Invalid spawn: blockWaterSpawns");
                 }
                 isValid = false;
             }
@@ -217,7 +225,7 @@ public class SpawnFinder {
         if (blockLavaSpawns) {
             if (block0.getType() == Material.LAVA) {
                 if (debugMode) {
-                    System.out.println("Invalid spawn: blockLavaSpawns");
+                    //System.out.println("Invalid spawn: blockLavaSpawns");
                 }
                 isValid = false;
             }
@@ -226,21 +234,40 @@ public class SpawnFinder {
         return isValid;
     }
 
+    // Dreeam - Lag god below
     public int getHighestY(World world, int x, int z) {
+        int i = world.getMaxHeight();
+        while (i > world.getMinHeight()) {
+            if (!(new Location(world, x, i, z).getBlock().getType().isAir())) {
+                if (config.getBoolean("debug-mode")) {
+                    System.out.println(x + ", " + i + ", " + z);
+                }
+                return i;
+            }
+            i--;
+        }
+        return i;
+    }
+
+    public int getHighestY2(World world, int x, int z) {
         int maxHeight = world.getMaxHeight();
         int minHeight = world.getMinHeight();
 
         for (int i = maxHeight; i >= minHeight; i--) {
-            Location location = new Location(world, x, i, z);
-            if (!location.getBlock().isEmpty()) {
+            Block location = RandomSpawnPlus.getInstance().getServer().getWorld(world.getName()).getBlockAt(x, i, z);
+            if (!location.isEmpty()) {
                 if (config.getBoolean("debug-mode")) {
-                    System.out.println(i);
+                    System.out.println(location.getX() + ", " + location.getY() + ", " + location.getZ());
                 }
                 return i;
             }
         }
-        return minHeight;
+
+        return maxHeight;
     }
 
-
+    public int getHighestYBetter(World world, int x, int z) {
+        Block location = RandomSpawnPlus.getInstance().getServer().getWorld(world.getName()).getHighestBlockAt(x, z);
+        return location.getY();
+    }
 }

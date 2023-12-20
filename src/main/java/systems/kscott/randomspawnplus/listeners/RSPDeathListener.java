@@ -23,14 +23,13 @@ public class RSPDeathListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDeath(PlayerRespawnEvent event) {
-
-        Player player = event.getPlayer();
-
         if (config.getBoolean("randomspawn-enabled")) {
             if (config.getBoolean("on-death")) {
+                Player player = event.getPlayer();
+
                 if (player.isDead()) {
                     if (!config.getBoolean("use-permission-node") || (config.getBoolean("use-permission-node") && player.hasPermission("randomspawnplus.randomspawn"))) {
-                        if (config.getBoolean("spawn-at-bed")) {
+                        if (config.getBoolean("spawn-at-bed")) { // Dreeam TODO - need cleanup or Optimize logic?
                             if (player.getBedSpawnLocation() != null) {
                                 event.setRespawnLocation(player.getBedSpawnLocation());
                                 return;
@@ -39,14 +38,13 @@ public class RSPDeathListener implements Listener {
 
                         Location location;
                         try {
-                            location = SpawnFinder.getInstance().findSpawn(true).add(0.5, 0, 0.5);
+                            location = SpawnFinder.getInstance().getSpawn().add(0.5, 0, 0.5); // Dreeam TODO - need to remove the add?
                         } catch (Exception e) {
                             RandomSpawnPlus.getInstance().getLogger().warning("The spawn finder failed to find a valid spawn, and has not given " + player.getName() + " a random spawn. If you find this happening a lot, then raise the 'spawn-finder-tries-before-timeout' key in the config.");
                             return;
                         }
 
                         RandomSpawnEvent randomSpawnEvent = new RandomSpawnEvent(location, player, SpawnType.ON_DEATH);
-
                         Bukkit.getServer().getPluginManager().callEvent(randomSpawnEvent);
                         event.setRespawnLocation(location);
                     }

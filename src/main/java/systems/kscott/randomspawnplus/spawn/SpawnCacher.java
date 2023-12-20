@@ -73,6 +73,7 @@ public class SpawnCacher {
         cacheSpawnTask = RandomSpawnPlus.getInstance().foliaLib.getImpl().runTimer(() -> {
             /* Wait for all spawns to be cached */
             if (newLocations.size() <= missingLocations) {
+                // Dreeam TODO - check if this condition is useless
                 if (RandomSpawnPlus.getInstance().getConfig().getBoolean("debug-mode")) {
                     System.out.println(newLocations.size() + ", " + missingLocations);
                 }

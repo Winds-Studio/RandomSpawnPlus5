@@ -24,22 +24,21 @@ public class RSPFirstJoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void firstJoinHandler(PlayerJoinEvent event) {
-
-        Player player = event.getPlayer();
-
         if (config.getBoolean("randomspawn-enabled")) {
             if (config.getBoolean("on-first-join")) {
+                Player player = event.getPlayer();
+
                 if (RSPLoginListener.firstJoinPlayers.contains(player.getUniqueId())) {
                     if (config.getBoolean("use-permission-node") && !player.hasPermission("randomspawnplus.randomspawn")) {
                         RSPLoginListener.firstJoinPlayers.remove(player.getUniqueId());
                     } else {
                         try {
-                            Location spawnLoc = SpawnFinder.getInstance().findSpawn(true);
+                            Location spawnLoc = SpawnFinder.getInstance().getSpawn();
                             // quiquelhappy start - Prevent essentials home replace
                             boolean prevent = false;
                             if (config.getBoolean("essentials-home-on-first-spawn")) {
                                 User user = RandomSpawnPlus.getInstance().getEssentials().getUser(player);
-                                if(!user.hasHome()){
+                                if (!user.hasHome()) {
                                     user.setHome("home", spawnLoc);
                                     user.save();
                                 } else {
@@ -49,7 +48,6 @@ public class RSPFirstJoinListener implements Listener {
                             if (!prevent) {
                                 RandomSpawnPlus.getInstance().foliaLib.getImpl().runLater(() -> {
                                     RandomSpawnEvent randomSpawnEvent = new RandomSpawnEvent(spawnLoc, player, SpawnType.FIRST_JOIN);
-
                                     Bukkit.getServer().getPluginManager().callEvent(randomSpawnEvent);
                                     RandomSpawnPlus.getInstance().foliaLib.getImpl().teleportAsync(player, spawnLoc.add(0.5, 0, 0.5));
                                 }, 3);

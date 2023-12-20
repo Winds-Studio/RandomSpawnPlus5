@@ -33,7 +33,7 @@ unsafe-blocks:
 ### Random Spawn ###
 ####################
 
-# Enable the random spawning feature? (disable this if you just want /wild)
+# Enable the random spawning feature? (disable this if you just want use /wild)
 randomspawn-enabled: true
 
 # Will RandomSpawnPlus give players random spawns on death?

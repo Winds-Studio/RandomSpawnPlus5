@@ -71,7 +71,7 @@ public class CommandWild extends BaseCommand {
 
         Location location;
         try {
-            location = SpawnFinder.getInstance().findSpawn(true);
+            location = SpawnFinder.getInstance().getSpawn();
         } catch (Exception e) {
             Chat.msg(player, Chat.get("error-finding-spawn"));
             return;
@@ -112,7 +112,7 @@ public class CommandWild extends BaseCommand {
 
         Location location;
         try {
-            location = SpawnFinder.getInstance().findSpawn(true);
+            location = SpawnFinder.getInstance().getSpawn();
         } catch (Exception e) {
             Chat.msg(otherPlayer, Chat.get("error-finding-spawn"));
             return;

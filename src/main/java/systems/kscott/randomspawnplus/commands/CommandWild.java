@@ -47,13 +47,12 @@ public class CommandWild extends BaseCommand {
             cooldown = 0;
         }
 
-        if ((cooldown - Instant.now().toEpochMilli()) >= 0) {
-            if (config.getBoolean("debug-mode"))
-                System.out.println(cooldown);
-
+        long now = Instant.now().toEpochMilli();
+        if ((cooldown - now) >= 0) {
+            if (config.getBoolean("debug-mode")) System.out.println(cooldown);
 
             String message = Chat.get("wild-tp-cooldown");
-            message = message.replace("%delay", Chat.timeLeft(cooldown / 1000 - Instant.now().getEpochSecond()));
+            message = message.replace("%delay", Chat.timeLeft(cooldown / 1000 - now));
 
             Chat.msg(player, message);
             return;

@@ -16,7 +16,7 @@ import systems.kscott.randomspawnplus.util.Chat;
 public class CommandRSP extends BaseCommand {
 
     @Default
-    @Subcommand("help|h")
+    @Subcommand("help")
     public void _main(CommandSender player) {
         Chat.msg(player, "&8[&3RandomSpawnPlus&8] &7Running &bv" + RandomSpawnPlus.getInstance().getDescription().getVersion() + "&7, made with love &a:^)");
         Chat.msg(player, "");

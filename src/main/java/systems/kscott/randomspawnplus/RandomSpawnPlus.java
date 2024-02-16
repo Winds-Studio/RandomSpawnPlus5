@@ -105,9 +105,11 @@ public final class RandomSpawnPlus extends JavaPlugin {
     }
 
     public void registerEvents() {
-        getServer().getPluginManager().registerEvents(new RSPDeathListener(), this);
-        getServer().getPluginManager().registerEvents(new RSPLoginListener(), this);
-        getServer().getPluginManager().registerEvents(new RSPFirstJoinListener(), this);
+        if (getConfig().getBoolean("randomspawn-enabled")) {
+            getServer().getPluginManager().registerEvents(new RSPDeathListener(), this);
+            getServer().getPluginManager().registerEvents(new RSPLoginListener(), this);
+            getServer().getPluginManager().registerEvents(new RSPFirstJoinListener(), this);
+        }
     }
 
     public void registerCommands() {

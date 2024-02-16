@@ -22,15 +22,13 @@ public class RSPLoginListener implements Listener {
 
     @EventHandler
     public void preLoginHandler(AsyncPlayerPreLoginEvent event) {
-        if (config.getBoolean("randomspawn-enabled")) {
-            if (config.getBoolean("on-first-join")) {
-                UUID playerUUID = event.getUniqueId();
+        if (config.getBoolean("on-first-join")) {
+            UUID playerUUID = event.getUniqueId();
 
-                boolean hasPlayed = Bukkit.getServer().getOfflinePlayer(playerUUID).hasPlayedBefore();
+            boolean hasPlayed = Bukkit.getServer().getOfflinePlayer(playerUUID).hasPlayedBefore();
 
-                if (!hasPlayed) {
-                    firstJoinPlayers.add(playerUUID);
-                }
+            if (!hasPlayed) {
+                firstJoinPlayers.add(playerUUID);
             }
         }
     }

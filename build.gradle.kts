@@ -47,8 +47,8 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
 
     compileOnly("org.apache.commons:commons-lang3:3.14.0")
-    compileOnly("org.projectlombok:lombok:1.18.30")
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
     api("org.bstats:bstats-bukkit:3.0.2")
     api("co.aikar:acf-paper:0.5.1-SNAPSHOT")
     api("com.tcoded:FoliaLib:0.3.1")

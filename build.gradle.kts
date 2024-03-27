@@ -47,14 +47,14 @@ repositories {
     }
 }
 
-val adventureVersion = "4.14.0"
+val adventureVersion = "4.16.0"
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
 
     compileOnly("org.apache.commons:commons-lang3:3.14.0")
-    compileOnly("org.projectlombok:lombok:1.18.30")
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
     api("org.bstats:bstats-bukkit:3.0.2")
     api("co.aikar:acf-paper:0.5.1-SNAPSHOT")
     api("com.tcoded:FoliaLib:0.3.1")
@@ -64,7 +64,7 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("org.popcraft:chunky-common:1.3.38")
 
-    api("net.kyori:adventure-platform-bukkit:4.3.1")
+    api("net.kyori:adventure-platform-bukkit:4.3.2")
     api("net.kyori:adventure-api:$adventureVersion")
     api("net.kyori:adventure-text-serializer-legacy:$adventureVersion")
 }

@@ -51,7 +51,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.32")
     api("org.bstats:bstats-bukkit:3.0.2")
     api("co.aikar:acf-paper:0.5.1-SNAPSHOT")
-    api("com.tcoded:FoliaLib:0.3.1")
+    api("com.tcoded:FoliaLib:0.4.2")
 
     compileOnly("net.essentialsx:EssentialsX:2.20.1")
     compileOnly("net.luckperms:api:5.4")

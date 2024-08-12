@@ -46,7 +46,7 @@ val adventureVersion = "4.16.0"
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
 
-    compileOnly("org.apache.commons:commons-lang3:3.14.0")
+    compileOnly("org.apache.commons:commons-lang3:3.16.0")
     compileOnly("org.projectlombok:lombok:1.18.32")
     annotationProcessor("org.projectlombok:lombok:1.18.32")
     api("org.bstats:bstats-bukkit:3.0.2")

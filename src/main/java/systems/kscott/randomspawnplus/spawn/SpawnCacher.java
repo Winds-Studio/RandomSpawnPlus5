@@ -1,12 +1,11 @@
 package systems.kscott.randomspawnplus.spawn;
 
 import com.tcoded.folialib.wrapper.task.WrappedTask;
-import lombok.Getter;
+import systems.kscott.randomspawnplus.RandomSpawnPlus;
+import systems.kscott.randomspawnplus.util.Locations;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
-import systems.kscott.randomspawnplus.RandomSpawnPlus;
-import systems.kscott.randomspawnplus.util.Locations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +15,7 @@ public class SpawnCacher {
 
     public static SpawnCacher INSTANCE;
 
-    @Getter
     private boolean spawnsRequireSaving;
-    @Getter
     private final List<String> cachedSpawns;
     private WrappedTask cacheSpawnTask;
 

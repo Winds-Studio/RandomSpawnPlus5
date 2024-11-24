@@ -1,11 +1,11 @@
 package systems.kscott.randomspawnplus.util;
 
-import lombok.Setter;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
+import systems.kscott.randomspawnplus.config.Config;
+import systems.kscott.randomspawnplus.config.LangConfig;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.text.NumberFormat;
 import java.util.Arrays;
@@ -14,11 +14,10 @@ import java.util.Locale;
 public class Chat {
     /* Thanks splodge */
 
-    @Setter
-    private static FileConfiguration lang;
+    private static LangConfig lang;
 
     public static void initialize() {
-        lang = RandomSpawnPlus.getInstance().getLang();
+        lang = Config.getLangConfig();
     }
 
     public static void msg(Player player, String... messages) {
@@ -63,7 +62,6 @@ public class Chat {
     }
 
     public static String get(String key) {
-        return lang.getString(key);
+        return null;
     }
-
 }

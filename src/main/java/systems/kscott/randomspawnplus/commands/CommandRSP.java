@@ -6,9 +6,9 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import org.bukkit.command.CommandSender;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
 import systems.kscott.randomspawnplus.util.Chat;
+import org.bukkit.command.CommandSender;
 
 @CommandAlias("rsp|randomspawnplus")
 @Description("Manage the plugin")

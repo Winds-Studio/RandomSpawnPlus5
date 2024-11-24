@@ -1,12 +1,10 @@
 package systems.kscott.randomspawnplus.events;
 
-import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
 
-@Getter
 public class SpawnCheckEvent extends Event {
 
     private static final HandlerList HANDLERS_LIST = new HandlerList();
@@ -33,6 +31,4 @@ public class SpawnCheckEvent extends Event {
         this.validReason = reason;
         this.valid = valid;
     }
-
-
 }

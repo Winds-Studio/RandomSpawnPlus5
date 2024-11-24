@@ -1,15 +1,15 @@
 package systems.kscott.randomspawnplus.spawn;
 
+import systems.kscott.randomspawnplus.RandomSpawnPlus;
+import systems.kscott.randomspawnplus.events.SpawnCheckEvent;
+import systems.kscott.randomspawnplus.util.Chat;
+import systems.kscott.randomspawnplus.util.Numbers;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import systems.kscott.randomspawnplus.RandomSpawnPlus;
-import systems.kscott.randomspawnplus.events.SpawnCheckEvent;
-import systems.kscott.randomspawnplus.util.Chat;
-import systems.kscott.randomspawnplus.util.Numbers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,25 +17,24 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SpawnFinder {
 
-    public static SpawnFinder INSTANCE;
-    public FileConfiguration config;
-    ArrayList<Material> unsafeBlocks;
+    private static SpawnFinder INSTANCE;
+    private static FileConfiguration config;
+    public static World spawnLevel;
+    private static ArrayList<Material> unsafeBlocks;
 
-    public SpawnFinder() {
-        this.config = RandomSpawnPlus.getInstance().getConfig();
+    public static void init() {
+        config = RandomSpawnPlus.getInstance().getConfig();
 
         /* Setup safeblocks */
         List<String> unsafeBlockStrings;
         unsafeBlockStrings = config.getStringList("unsafe-blocks");
+        String spawnLevelName = config.getString("respawn-world");
+        spawnLevel = Bukkit.getWorld(spawnLevelName);
 
         unsafeBlocks = new ArrayList<>();
         for (String string : unsafeBlockStrings) {
             unsafeBlocks.add(Material.matchMaterial(string));
         }
-    }
-
-    public static void initialize() {
-        INSTANCE = new SpawnFinder();
     }
 
     public static SpawnFinder getInstance() {
@@ -241,6 +240,4 @@ public class SpawnFinder {
         }
         return minHeight;
     }
-
-
 }

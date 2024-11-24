@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "systems.kscott"
-version = "5.1.0"
+version = "6.0.0"
 
 repositories {
     mavenCentral()
@@ -39,19 +39,25 @@ repositories {
         name = "devmart-other"
         url = uri("https://nexuslite.gcnt.net/repos/other/")
     }
+
+    // ConfigurationMaster API
+    maven {
+        name = "ConfigurationMaster-repo"
+        url = uri("https://ci.pluginwiki.us/plugin/repository/everything/")
+    }
 }
 
-val adventureVersion = "4.16.0"
+val adventureVersion = "4.17.0"
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.21.3-R0.1-SNAPSHOT")
 
-    compileOnly("org.apache.commons:commons-lang3:3.17.0")
-    compileOnly("org.projectlombok:lombok:1.18.32")
-    annotationProcessor("org.projectlombok:lombok:1.18.32")
+    compileOnly("org.apache.logging.log4j:log4j-api:2.24.1")
+    compileOnly("it.unimi.dsi:fastutil:8.5.15")
     api("org.bstats:bstats-bukkit:3.1.0")
-    api("co.aikar:acf-paper:0.5.1-SNAPSHOT")
+    api("co.aikar:acf-paper:0.5.1-SNAPSHOT") // Remove
     api("com.tcoded:FoliaLib:0.4.2")
+    implementation("com.github.thatsmusic99:ConfigurationMaster-API:v2.0.0-rc.2")
 
     compileOnly("net.essentialsx:EssentialsX:2.20.1")
     compileOnly("net.luckperms:api:5.4")
@@ -62,38 +68,38 @@ dependencies {
     api("net.kyori:adventure-text-serializer-legacy:$adventureVersion")
 }
 
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-}
-
 configure<JavaPluginExtension> {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-tasks.build.configure {
-    dependsOn("shadowJar")
-}
-
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    archiveFileName = "${project.name}-${project.version}.jar"
-    exclude("META-INF/**", // Dreeam - Avoid to include META-INF/maven in Jar
-        "com/cryptomorin/xseries/XBiome*",
-        "com/cryptomorin/xseries/NMSExtras*",
-        "com/cryptomorin/xseries/NoteBlockMusic*",
-        "com/cryptomorin/xseries/SkullCacheListener*")
-    minimize {
-        exclude(dependency("com.tcoded.folialib:.*:.*"))
-    }
-    relocate("net.kyori", "systems.kscott.randomspawnplus.libs.kyori")
-    relocate("co.aikar.commands", "systems.kscott.randomspawnplus.libs.acf.commands")
-    relocate("co.aikar.locales", "systems.kscott.randomspawnplus.libs.acf.locales")
-    relocate("com.cryptomorin.xseries", "systems.kscott.randomspawnplus.libs.xseries")
-    relocate("org.bstats", "systems.kscott.randomspawnplus.libs.bstats")
-    relocate("com.tcoded.folialib", "systems.kscott.randomspawnplus.libs.folialib")
-}
-
 tasks {
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+
+    build.configure {
+        dependsOn("shadowJar")
+    }
+
+    shadowJar {
+        archiveFileName = "${project.name}-${project.version}.jar"
+        exclude("META-INF/**", // Dreeam - Avoid to include META-INF/maven in Jar
+            "com/cryptomorin/xseries/XBiome*",
+            "com/cryptomorin/xseries/NMSExtras*",
+            "com/cryptomorin/xseries/NoteBlockMusic*",
+            "com/cryptomorin/xseries/SkullCacheListener*")
+        minimize {
+            exclude(dependency("com.tcoded.folialib:.*:.*"))
+        }
+        relocate("net.kyori", "systems.kscott.randomspawnplus.libs.kyori")
+        relocate("co.aikar.commands", "systems.kscott.randomspawnplus.libs.acf.commands")
+        relocate("co.aikar.locales", "systems.kscott.randomspawnplus.libs.acf.locales")
+        relocate("com.cryptomorin.xseries", "systems.kscott.randomspawnplus.libs.xseries")
+        relocate("org.bstats", "systems.kscott.randomspawnplus.libs.bstats")
+        relocate("com.tcoded.folialib", "systems.kscott.randomspawnplus.libs.folialib")
+    }
+
     processResources {
         filesMatching("**/plugin.yml") {
             expand("version" to project.version)

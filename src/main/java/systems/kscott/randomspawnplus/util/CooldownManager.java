@@ -1,7 +1,7 @@
 package systems.kscott.randomspawnplus.util;
 
-import org.bukkit.entity.Player;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
+import org.bukkit.entity.Player;
 
 import java.time.Instant;
 import java.util.HashMap;

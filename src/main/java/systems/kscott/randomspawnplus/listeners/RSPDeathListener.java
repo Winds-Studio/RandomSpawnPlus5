@@ -1,5 +1,9 @@
 package systems.kscott.randomspawnplus.listeners;
 
+import systems.kscott.randomspawnplus.RandomSpawnPlus;
+import systems.kscott.randomspawnplus.events.RandomSpawnEvent;
+import systems.kscott.randomspawnplus.events.SpawnType;
+import systems.kscott.randomspawnplus.spawn.SpawnFinder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -8,18 +12,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import systems.kscott.randomspawnplus.RandomSpawnPlus;
-import systems.kscott.randomspawnplus.events.RandomSpawnEvent;
-import systems.kscott.randomspawnplus.events.SpawnType;
-import systems.kscott.randomspawnplus.spawn.SpawnFinder;
 
 public class RSPDeathListener implements Listener {
 
     private final FileConfiguration config;
-
-    public RSPDeathListener() {
-        this.config = RandomSpawnPlus.getInstance().getConfig();
-    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDeath(PlayerRespawnEvent event) {

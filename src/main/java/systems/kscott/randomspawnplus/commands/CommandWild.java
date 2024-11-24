@@ -6,17 +6,17 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import com.earth2me.essentials.User;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
 import systems.kscott.randomspawnplus.events.RandomSpawnEvent;
 import systems.kscott.randomspawnplus.events.SpawnType;
 import systems.kscott.randomspawnplus.spawn.SpawnFinder;
 import systems.kscott.randomspawnplus.util.Chat;
 import systems.kscott.randomspawnplus.util.CooldownManager;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.time.Instant;
 
@@ -53,15 +53,15 @@ public class CommandWild extends BaseCommand {
 
 
             String message = Chat.get("wild-tp-cooldown");
-            message = message.replace("%delay", Chat.timeLeft(cooldown / 1000 - Instant.now().getEpochSecond()));
+            message = message.replace("%delay%", Chat.timeLeft(cooldown / 1000 - Instant.now().getEpochSecond()));
 
             Chat.msg(player, message);
             return;
 
         }
-        if (RandomSpawnPlus.getEconomy() != null && RandomSpawnPlus.getInstance().getConfig().getInt("wild-cost") != 0 && !player.hasPermission("randomspawnplus.wild.bypasscost")) {
-            if (RandomSpawnPlus.getEconomy().has(player, config.getInt("wild-cost"))) {
-                RandomSpawnPlus.getEconomy().withdrawPlayer(player, config.getInt("wild-cost"));
+        if (RandomSpawnPlus.getInstance().getConfig().getInt("wild-cost") != 0 && RandomSpawnPlus.getHooks().getEconomy() != null && !player.hasPermission("randomspawnplus.wild.bypasscost")) {
+            if (RandomSpawnPlus.getHooks().getEconomy().has(player, config.getInt("wild-cost"))) {
+                RandomSpawnPlus.getHooks().getEconomy().withdrawPlayer(player, config.getInt("wild-cost"));
             } else {
                 Chat.msg(player, Chat.get("wild-no-money"));
                 return;
@@ -78,13 +78,13 @@ public class CommandWild extends BaseCommand {
 
 
         String message = Chat.get("wild-tp")
-                .replace("%x", Integer.toString(location.getBlockX()))
-                .replace("%y", Integer.toString(location.getBlockY()))
-                .replace("%z", Integer.toString(location.getBlockZ()));
+                .replace("%x%", Integer.toString(location.getBlockX()))
+                .replace("%y%", Integer.toString(location.getBlockY()))
+                .replace("%z%", Integer.toString(location.getBlockZ()));
         Chat.msg(player, message);
 
-        if (config.getBoolean("home-on-wild")) {
-            User user = RandomSpawnPlus.getInstance().getEssentials().getUser(player);
+        if (config.getBoolean("home-on-wild") && RandomSpawnPlus.getHooks().getEssentials() != null) {
+            User user = RandomSpawnPlus.getHooks().getEssentials().getUser(player);
             if (!user.hasHome()) {
                 user.setHome("home", location);
                 user.save();
@@ -117,14 +117,14 @@ public class CommandWild extends BaseCommand {
             return;
         }
         String message = Chat.get("wild-tp")
-                .replace("%x", Integer.toString(location.getBlockX()))
-                .replace("%y", Integer.toString(location.getBlockY()))
-                .replace("%z", Integer.toString(location.getBlockZ()));
+                .replace("%x%", Integer.toString(location.getBlockX()))
+                .replace("%y%", Integer.toString(location.getBlockY()))
+                .replace("%z%", Integer.toString(location.getBlockZ()));
 
         Chat.msg(otherPlayer, message);
 
         message = Chat.get("wild-tp-other");
-        message = message.replace("%player", otherPlayer.getName());
+        message = message.replace("%player%", otherPlayer.getName());
         Chat.msg(sender, message);
 
         RandomSpawnEvent randomSpawnEvent = new RandomSpawnEvent(location, otherPlayer.getPlayer(), SpawnType.WILD_COMMAND);

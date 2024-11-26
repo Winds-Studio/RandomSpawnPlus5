@@ -1,6 +1,10 @@
-name: Build RandomSpawnPlus5
+name: Build RandomSpawnPlus
 
-on: [ push ]
+on:
+  push:
+    branches: [ "feat/nextgen" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -20,11 +24,12 @@ jobs:
       - name: Build
         run: ./gradlew clean build
 
-      - name: Release RandomSpawnPlus5
+      - name: Release RandomSpawnPlus
+        if: github.event_name != 'pull_request'
         uses: marvinpinto/action-automatic-releases@master
         with:
-          title: "RandomSpawnPlus5 v5.1.0-SNAPSHOT"
-          automatic_release_tag: "5.1.0-SNAPSHOT"
+          title: "RandomSpawnPlus"
+          automatic_release_tag: "6.0.0-SNAPSHOT"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           files: "build/libs/*.jar"
           prerelease: true

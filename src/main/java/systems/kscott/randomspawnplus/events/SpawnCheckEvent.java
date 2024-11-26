@@ -10,7 +10,7 @@ public class SpawnCheckEvent extends Event {
     private static final HandlerList HANDLERS_LIST = new HandlerList();
     private final Location location;
     private boolean valid;
-    private String validReason = "UNK";
+    private String validReason = "Unknown";
 
     public SpawnCheckEvent(Location location) {
         this.location = location;

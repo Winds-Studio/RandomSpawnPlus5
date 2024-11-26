@@ -23,7 +23,7 @@ public class HookInstance {
     }
 
     private void registerHooks() {
-        new Metrics(pluginInstance, 6465);
+        new Metrics(pluginInstance, 6465); // TODO Note: Use own bstats, since no one update.
 
         Plugin essPlugin = pluginInstance.getServer().getPluginManager().getPlugin("Essentials");
 
@@ -63,8 +63,11 @@ public class HookInstance {
 
     private boolean setupEconomy() {
         RegisteredServiceProvider<Economy> rsp = pluginInstance.getServer().getServicesManager().getRegistration(Economy.class);
+
         if (rsp == null) return false;
+
         economy = rsp.getProvider();
+
         return economy != null;
     }
 

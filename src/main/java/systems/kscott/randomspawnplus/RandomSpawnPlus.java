@@ -15,8 +15,7 @@ import systems.kscott.randomspawnplus.listeners.RSPFirstJoinListener;
 import systems.kscott.randomspawnplus.listeners.RSPLoginListener;
 import systems.kscott.randomspawnplus.spawn.SpawnCacher;
 import systems.kscott.randomspawnplus.spawn.SpawnFinder;
-import systems.kscott.randomspawnplus.util.Chat;
-import org.bukkit.configuration.file.FileConfiguration;
+import systems.kscott.randomspawnplus.util.PlatformUtil;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RandomSpawnPlus extends JavaPlugin {
@@ -24,23 +23,21 @@ public final class RandomSpawnPlus extends JavaPlugin {
     private static RandomSpawnPlus INSTANCE;
     private static HookInstance hookInstance;
     public static final Logger LOGGER = LogManager.getLogger(RandomSpawnPlus.class.getSimpleName());
+    private BukkitAudiences adventure;
     public FoliaLib foliaLib = new FoliaLib(this);
 
-    private BukkitAudiences adventure;
     public @NotNull BukkitAudiences adventure() {
         if (this.adventure == null) {
             throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
         }
+
         return this.adventure;
     }
 
     @Override
     public void onEnable() {
-
         INSTANCE = this;
         this.adventure = BukkitAudiences.create(this);
-
-        Chat.setLang(langManager.getConfig());
 
         Config.loadConfig();
 
@@ -48,9 +45,9 @@ public final class RandomSpawnPlus extends JavaPlugin {
         registerCommands();
         registerHooks();
 
+        PlatformUtil.init();
         SpawnFinder.init();
         SpawnCacher.initialize();
-        Chat.initialize();
     }
 
     @Override
@@ -64,6 +61,8 @@ public final class RandomSpawnPlus extends JavaPlugin {
     }
 
     private void registerEvents() {
+        if (!Config.getGlobalConfig().randomSpawnEnabled) return;
+
         getServer().getPluginManager().registerEvents(new RSPDeathListener(), this);
         getServer().getPluginManager().registerEvents(new RSPLoginListener(), this);
         getServer().getPluginManager().registerEvents(new RSPFirstJoinListener(), this);
@@ -72,7 +71,8 @@ public final class RandomSpawnPlus extends JavaPlugin {
     private void registerCommands() {
         PaperCommandManager manager = new PaperCommandManager(this);
         manager.registerCommand(new CommandRSP());
-        if (configManager.get().getBoolean("wild-enabled")) {
+
+        if (Config.getGlobalConfig().wildEnabled) {
             manager.registerCommand(new CommandWild());
         }
     }
@@ -87,10 +87,6 @@ public final class RandomSpawnPlus extends JavaPlugin {
 
     public static HookInstance getHooks() {
         return hookInstance.getInstance();
-    }
-
-    public @NotNull FileConfiguration getConfig() {
-        return configManager.getConfig();
     }
 
     public FileConfiguration getSpawns() {

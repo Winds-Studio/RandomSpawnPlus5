@@ -2,14 +2,12 @@ package systems.kscott.randomspawnplus.spawn;
 
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
 import systems.kscott.randomspawnplus.events.SpawnCheckEvent;
-import systems.kscott.randomspawnplus.util.Chat;
-import systems.kscott.randomspawnplus.util.Numbers;
+import systems.kscott.randomspawnplus.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +15,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SpawnFinder {
 
-    private static SpawnFinder INSTANCE;
-    private static FileConfiguration config;
     public static World spawnLevel;
     private static ArrayList<Material> unsafeBlocks;
 
     public static void init() {
-        config = RandomSpawnPlus.getInstance().getConfig();
-
         /* Setup safeblocks */
         List<String> unsafeBlockStrings;
         unsafeBlockStrings = config.getStringList("unsafe-blocks");
@@ -37,8 +31,8 @@ public class SpawnFinder {
         }
     }
 
-    public static SpawnFinder getInstance() {
-        return INSTANCE;
+    private static void create() {
+
     }
 
     public Location getCandidateLocation() {
@@ -84,8 +78,8 @@ public class SpawnFinder {
             maxZ = region.getMaxZ();
         }
 
-        int candidateX = Numbers.getRandomNumberInRange(minX, maxX);
-        int candidateZ = Numbers.getRandomNumberInRange(minZ, maxZ);
+        int candidateX = Util.getRandomNumberInRange(minX, maxX);
+        int candidateZ = Util.getRandomNumberInRange(minZ, maxZ);
         int candidateY = getHighestY(world, candidateX, candidateZ);
 
         return new Location(world, candidateX, candidateY, candidateZ);
@@ -175,10 +169,10 @@ public class SpawnFinder {
         }
 
         if (blockedSpawnRange) {
-            if (Numbers.betweenExclusive((int) location.getX(), blockedMinX, blockedMaxX)) {
+            if (Util.betweenExclusive((int) location.getX(), blockedMinX, blockedMaxX)) {
                 isValid = false;
             }
-            if (Numbers.betweenExclusive((int) location.getZ(), blockedMinZ, blockedMaxZ)) {
+            if (Util.betweenExclusive((int) location.getZ(), blockedMinZ, blockedMaxZ)) {
                 isValid = false;
             }
         }

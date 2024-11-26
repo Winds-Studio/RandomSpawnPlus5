@@ -5,7 +5,6 @@ import systems.kscott.randomspawnplus.RandomSpawnPlus;
 import systems.kscott.randomspawnplus.util.Locations;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +33,6 @@ public class SpawnCacher {
     }
 
     private void cacheSpawns() {
-
-        FileConfiguration spawns = RandomSpawnPlus.getInstance().getSpawns();
-        FileConfiguration config = RandomSpawnPlus.getInstance().getConfig();
-
         SpawnFinder finder = SpawnFinder.getInstance();
 
         List<String> locationStrings = spawns.getStringList("spawns");

@@ -5,6 +5,8 @@ import io.github.thatsmusic99.configurationmaster.api.ConfigSection;
 import systems.kscott.randomspawnplus.RandomSpawnPlus;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +14,40 @@ public class GlobalConfig {
 
     private static ConfigFile configFile;
 
-    public String a;
+    public boolean randomSpawnEnabled = true;
+    public String respawnWorld = "world";
+    public int spawnCacheCount = 150;
+    public int spawnCacheTimeout = 1000;
+    public int spawnFindingFailedThreshold = 50;
+
+    public int spawnRangeMinX = -1000;
+    public int spawnRangeMaxX = 1000;
+    public int spawnRangeMinZ = -1000;
+    public int spawnRangeMaxZ = 1000;
+
+    public boolean blockedSpawnZoneEnabled = true;
+    public int blockedSpawnZoneMinX = -100;
+    public int blockedSpawnZoneMaxX = 100;
+    public int blockedSpawnZoneMinZ = -100;
+    public int blockedSpawnZoneMaxZ = 100;
+
+    public boolean randomSpawnOnDeath = true;
+    public boolean randomSpawnOnFirstJoin = true;
+    public boolean randomSpawnAtBed = true;
+    public List<String> unsafeBlocks = new ArrayList<>(Arrays.asList(
+            "#VINE", "#AIR", "WATER", "LAVA" // TODO Note: Add implementation for #Liquid
+    ));
+
+    public String homeIntegrationMode = "essentialsx"; // TODO Note: Use enum
+    public boolean useHomeOnDeath = true; // TODO Note: override on-death
+    public boolean setHomeOnFirstJoinSpawn = true; // TODO Note: override on-first-join
+
+    public boolean wildEnabled = true;
+    public int wildCooldown = 300;
+    public int wildDelay = 0;
+    public boolean wildAllowFirstUseForAll = false;
+    public int wildCost = 100;
+    public boolean setHomeOnWild = false;
 
     public GlobalConfig(boolean init, String fileName) throws Exception {
         RandomSpawnPlus instance = RandomSpawnPlus.getInstance();
@@ -41,10 +76,66 @@ public class GlobalConfig {
 
         // Init value for config keys
         initConfig();
+
+        // Validate values and disable plugin directly.
+        validateConfigValues();
     }
 
-    private static void initConfig() {
+    private void initConfig() {
+        final String generalPath = "general.";
+        final String spawnControlPath = "spawn-control.";
+        final String hooksPath = "hooks.";
+        final String wildCommandPath = "wild-command.";
 
+        randomSpawnEnabled = getBoolean(generalPath + "random-spawn-enabled", randomSpawnEnabled, "Enable the random spawning feature? (disable this if you just want /wild)");
+        respawnWorld = getString(generalPath + "respawn-world", respawnWorld, "Which world to respawn players in?");
+        spawnCacheCount = getInt(generalPath + "spawn-cache-count", spawnCacheCount, "How many spawn locations should RandomSpawnPlus aim to keep cached?");
+        spawnCacheTimeout = getInt(generalPath + "spawn-cache-timeout", spawnCacheTimeout, "How long the spawn locations cache should be refreshed?");
+        spawnFindingFailedThreshold = getInt(generalPath + "spawn-finding-failed-threshold", spawnFindingFailedThreshold, "How many tries to find a valid spawn before the plugin times out?");
+
+        final String spawnRangePath = generalPath + "spawn-range.";
+        spawnRangeMinX = getInt(spawnRangePath + "min-x", spawnRangeMinX);
+        spawnRangeMaxX = getInt(spawnRangePath + "max-x", spawnRangeMaxX);
+        spawnRangeMinZ = getInt(spawnRangePath + "min-z", spawnRangeMinZ);
+        spawnRangeMaxZ = getInt(spawnRangePath + "max-z", spawnRangeMaxZ);
+
+        final String blockedSpawnZonePath = generalPath + "blocked-spawn-zone.";
+        blockedSpawnZoneEnabled = getBoolean(blockedSpawnZonePath + "enabled", blockedSpawnZoneEnabled);
+        blockedSpawnZoneMinX = getInt(blockedSpawnZonePath + "min-x", blockedSpawnZoneMinX);
+        blockedSpawnZoneMaxX = getInt(blockedSpawnZonePath + "max-x", blockedSpawnZoneMaxX);
+        blockedSpawnZoneMinZ = getInt(blockedSpawnZonePath + "min-z", blockedSpawnZoneMinZ);
+        blockedSpawnZoneMaxZ = getInt(blockedSpawnZonePath + "max-z", blockedSpawnZoneMaxZ);
+
+        randomSpawnOnDeath = getBoolean(spawnControlPath + "on-death", randomSpawnOnDeath);
+        randomSpawnOnFirstJoin = getBoolean(spawnControlPath + "on-first-join", randomSpawnOnFirstJoin);
+        randomSpawnAtBed = getBoolean(spawnControlPath + "spawn-at-bed", randomSpawnAtBed);
+        unsafeBlocks = getList(spawnControlPath + "unsafe-blocks", unsafeBlocks);
+
+        homeIntegrationMode = getString(hooksPath + "home-integration-mode", homeIntegrationMode);
+        useHomeOnDeath = getBoolean(hooksPath + "use-home-on-death", useHomeOnDeath);
+        setHomeOnFirstJoinSpawn = getBoolean(hooksPath + "set-home-first-join-random-spawn", setHomeOnFirstJoinSpawn);
+
+        wildEnabled = getBoolean(wildCommandPath + "wild-enabled", wildEnabled);
+        wildCooldown = getInt(wildCommandPath + "wild-cooldown", wildCooldown);
+        wildDelay = getInt(wildCommandPath + "wild-delay", wildDelay);
+        wildAllowFirstUseForAll = getBoolean(wildCommandPath + "wild-allow-first-use-no-permission", wildAllowFirstUseForAll);
+        wildCost = getInt(wildCommandPath + "wild-cost", wildCost);
+        setHomeOnWild = getBoolean(wildCommandPath + "set-home-on-wild", setHomeOnWild);
+    }
+
+    private void validateConfigValues() {
+        List<String> errors = new ArrayList<>();
+
+        if (RandomSpawnPlus.getInstance().getServer().getWorld(respawnWorld) == null) {
+            errors.add("");
+        }
+
+        // Collect, print then throw error
+        for (String error: errors) {
+            RandomSpawnPlus.LOGGER.error(error);
+        }
+
+        throw new RuntimeException();
     }
 
     public void saveConfig() throws Exception {
@@ -53,7 +144,8 @@ public class GlobalConfig {
 
     private void structureConfig() {
         createTitledSection("General", "general");
-        createTitledSection("Random Spawn", "spawn");
+        createTitledSection("Random Spawn Control", "spawn-control");
+        createTitledSection("Hooks", "hooks");
         createTitledSection("/wild", "wild-command");
     }
 

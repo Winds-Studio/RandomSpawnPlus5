@@ -83,7 +83,7 @@ tasks {
     }
 
     shadowJar {
-        archiveFileName = "${project.name}-${project.version}.jar"
+        archiveFileName = "${project.name}-${project.version}.${archiveExtension.get()}"
         exclude("META-INF/**", // Dreeam - Avoid to include META-INF/maven in Jar
             "com/cryptomorin/xseries/XBiome*",
             "com/cryptomorin/xseries/NMSExtras*",

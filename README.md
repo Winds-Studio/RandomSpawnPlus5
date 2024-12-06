@@ -1,11 +1,11 @@
-# RandomSpawnPlus5
+# RandomSpawnPlus
 
 🔀 A random spawn plugin for modern Minecraft version
 
 ## Compatibility
 
 - Support Java 8 and higher
-- Support 1.12.2 - Latest Minecraft version (1.21.1)
+- Support 1.12.2 - Latest Minecraft version (1.21.4)
 - Compatible with Spigot / Paper / Paper Forks / Forge+Bukkit Hybrid Server
 - Folia Support
 
@@ -16,6 +16,23 @@
 ## Contact
 
 - 📫 Discord: `dreeam___` | QQ: `2682173972`
+
+## TODO
+
+if Chunky/others enabled, hook them to generate/load
+
+spawn height, Compatible with lower version players
+
+Check ESS (Home integration), and whether override on-death
+and on-first-join in listener and other kind of places
+
+Optimize implementations in Util
+
+spawn status command
+
+reload listeners
+
+spawn or spawns?
 
 ## Special Thanks To:
 

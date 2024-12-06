@@ -49,5 +49,4 @@ public class Locations {
 
         return locStrings;
     }
-
 }
